@@ -1,6 +1,6 @@
 # COMP4971 Project
 
-## About this project
+## About This Project
 This project was conducted for COMP4971C Independent Work at HKUST in Spring 2025, supervised by Prof. Dan XU. Titled ```Generating Content for Web Browsing in Realtime using Large Language Models```, this project attempts to demonstrate real-time webpage generation by a Large Language Model (LLM) then displaying it.
 
 ## Implementation Details
@@ -19,6 +19,10 @@ An example can be found in ```/frontend/src/webpage.txt```.
 - Rather than static HTML, inline styles and responsive grid layouts in JavaScript are used
 - DOMContentLoaded event listener is included
 - Any data displayed will be stored in JSON format
+
+## Starting the Web Server
+- In the backend directory, run ```uvicorn main:app --reload --port 8000``` in a terminal
+- In the frontend directory, run ```npm start``` in a terminal
 
 ## Further Steps
 - Retrieval-Augmented Generation (RAG) to be applied before LLM queries to avoid hallucination
