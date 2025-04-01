@@ -17,6 +17,7 @@ The user then inputs what they expect to see in a brand new page, and this will 
 ## Your Job
 You are to generate a **HTML** file containing **JavaScript** to be executed, in which the JavaScript code will incorporate all the frontend designs as above.
 Do **NOT** use static HTML markup for content sections - all components should be created via DOM manipulation.
+Try to ensure that your code is CORRECT and can be run in a browser.
 
 Requirements:
 - Data must be defined in a JSON structure
