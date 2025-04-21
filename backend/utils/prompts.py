@@ -19,6 +19,9 @@ You are to generate a **HTML** file containing **JavaScript** to be executed, in
 Do **NOT** use static HTML markup for content sections - all components should be created via DOM manipulation.
 Try to ensure that your code is CORRECT and can be run in a browser.
 
+Remember that the code you generate is to be **directly shown** to the end user.
+Try to fulfill all requests from the user as much as you can.
+
 Requirements:
 - Data must be defined in a JSON structure
 - Use document.createElement() for all elements
@@ -40,6 +43,7 @@ Requirements:
     - Error handling for DOM elements
 
 Include also the content as instructed by the user. Instead of purely putting what you know about the specified content, try to include a bit more about related information.
+For instance, if asked about an album, try to include the lyrics for each song as well in the interface, and also the awards received.
 You may use any data you know to provide content the user is asking for, or perform online searches if required.
 You **MAY NOT** use any TypeScript or frontend library languages; instead use a **vanilla JavaScript function** that **returns a <div> container** to implement this webpage.
 Maintain the **SAME DESIGN PRINCIPLES** as stated below.
@@ -55,63 +59,97 @@ The original page was written with TypeScript as its frontend framework. Chakra-
 It is preferred that you place the contents with an overlay, similar to using <Box></Box> in Chakra-UI in TypeScript.
 Try not to allow the items to span over the ENTIRE page, as some users might be using wide screens.
 
-#### **Color Scheme**
+The original TypeScript webpage has the following design in TypeScript code. Please maintain similar design principles in generating your code.
 ```tsx
-// Core Retention
-bg="purple.50"         // Main background
-color="purple.600"     // Primary brand color
-colorScheme="purple"   // Button/active states
+<ChakraProvider>
+  <Box p={{8}} bg="purple.50" minH="100vh">
+    <Heading mb={{8}} textAlign="center" color="purple.600">
+      (G)I-DLE
+    </Heading>
+    
+    <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={{6}}>
+      {{members.map(member => (
+        <Box 
+          key={{member.id}} 
+          p={{6}} 
+          shadow="md" 
+          borderWidth="1px" 
+          borderRadius="md" 
+          bg="white"
+          _hover={{{{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}}}
+        >
+          <Image 
+            borderRadius="md"
+            mb={{4}}
+            h="300px"
+            w="100%"
+            objectFit="cover"
+            fallbackSrc="https://via.placeholder.com/300x300?text=Member+Image"
+          />
+          <Heading fontSize="xl" mb={{2}}>{{member.name}}</Heading>
+          <Text fontWeight="bold" color="purple.500">{{member.position}}</Text>
+          <Text mt={{2}}>{{member.description}}</Text>
+          <Text mt={{2}} fontSize="sm" color="gray.600">
+            Birthdate: {{member.birthdate}}
+          </Text>
 
-// Subsidiary Additions
-focusBorderColor="indigo.400"  // Input focus
-badgeBg="indigo.50"            // New feature tags
-hoverBg="purple.100"           // Sidebar navigation
+          <Input
+            mt={{4}}
+            placeholder={{`Ask about ${{member.name}}...`}}
+          />
+          <Button
+            mt={{2}}
+            colorScheme="purple"
+            w="100%"
+          >
+            Submit
+          </Button>
 
-#### **Layout and Components**
-// Grid System
-templateColumns="repeat(auto-fit, minmax(250px, 1fr))"  // Denser items
-gap=\{\{ base: 4, md: 6 \}\}                                // Responsive spacing
+          <Box mt={{4}} minH="100px" p={{2}} bg="gray.50" borderRadius="md">
+            <Text whiteSpace="pre-wrap">
+              {{responses[member.id] || 'Response will appear here...'}}
+            </Text>
+          </Box>
+        </Box>
+      ))}}
+    </Grid>
 
-// Navigation
-<Box 
-  w="240px" 
-  bg="purple.100" 
-  position="sticky" 
-  display=\{\{ base: 'none', md: 'block' }}
-/>
+    {{/* Discography Section */}}
+    <Box mb={{8}} p={{6}} bg="white" borderRadius="md" boxShadow="md" mt={{8}}>
+      <Heading size="lg" mb={{4}} color="purple.600">What do you want to read about?</Heading>
+      
+      <Input
+        placeholder="Tell me what you want to see about (G)I-DLE and I'll show it to you..."
+        mb={{4}}
+      />
+      <Button
+        colorScheme="purple"
+        loadingText="Generating..."
+      >
+        Explore
+      </Button>
+    </Box>
+  </Box>
+</ChakraProvider>
+```
+Emphasized features:
+- Color scheme (purple accents with white/gray backgrounds)
+- Responsive grid layout with card-based member profiles
+- Hover animations on cards
+- Consistent spacing (paddings/margins)
+- Typography hierarchy (heading sizes/weights)
+- Card styling (shadows, borders, rounded corners)
+- Image formatting (fixed aspect ratio, cover fit)
+- Input/button styling (full-width, purple theme)
+- Response box styling (gray background, pre-formatted text)
+- Section separation (box shadows and spacing)
+- Placeholder image handling
+- Loading states visualization
 
-// Card Variants
-// Standard Card
-shadow="md" borderRadius="md" borderTop="4px solid" borderColor="purple.600"
-
-// Compact Card
-p={4} shadow="sm" _hover=\{\{ transform: 'scale(1.03)' }}
-
-#### **Interactive Elements**
-// Enhanced Buttons
-<Button 
-  variant="outline" 
-  colorScheme="indigo" 
-  _active={{ bg: 'indigo.50' }}
->
-  Secondary Action
-</Button>
-
-// Search Input
-<Input 
-  placeholder="Search..." 
-  bg="purple.50" 
-  _placeholder={{ color: 'purple.300' }}
-/>
-
-// Skeleton Loaders
-<Skeleton 
-  startColor="purple.50" 
-  endColor="purple.100" 
-  borderRadius="md"
-/>
 
 ## An Example HTML Page
+You are expected to produce code that gives a webpage with similar quality as the example below.
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,7 +169,6 @@ p={4} shadow="sm" _hover=\{\{ transform: 'scale(1.03)' }}
 
     <script>
         const DynamicComponent = () => {
-            // Data structure remains unchanged
             const data = {
                 "albums": [
                 {
@@ -325,5 +362,6 @@ p={4} shadow="sm" _hover=\{\{ transform: 'scale(1.03)' }}
     </script>
 </body>
 </html>
+```
 """
     return prompt
