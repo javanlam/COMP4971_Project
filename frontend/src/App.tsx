@@ -20,7 +20,10 @@ function App() {
   const [dynamicInput, setDynamicInput] = useState('')
   const [isDynamicLoading, setIsDynamicLoading] = useState(false)
   const [showDynamic, setShowDynamic] = useState(false)
+  const [isGenerated, setGenerated] = useState(false)
+  const [isRegenerating, setIsRegenerating] = useState(false)
   const toast = useToast()
+  var generatedPage = ""  // to store previously generated webpage code
 
   useEffect(() => {
     // Fetch members
@@ -65,6 +68,7 @@ function App() {
       );
 
       console.log(componentCode);  // For debug purposes
+      generatedPage = componentCode;
 
       // Opens generated page in a new tab
       const blob = new Blob([componentCode], { type: 'text/html' });
@@ -86,8 +90,48 @@ function App() {
       console.log(error);
     } finally {
       setIsDynamicLoading(false);
+      setGenerated(true);
     }
   };
+
+  const handleRegenerate = async() => {
+    console.log(dynamicInput);
+    setIsRegenerating(true);
+    try {
+      // Fetch code from LLM via API calls
+      const { data: componentCode } = await axios.post(
+        'http://localhost:8000/api/webpage-regeneration', {
+          prompt: dynamicInput || '',
+          webpage: generatedPage
+        }
+      );
+
+      console.log(componentCode);  // For debug purposes
+      generatedPage = componentCode;
+
+      // Opens re-generated page in a new tab
+      const blob = new Blob([componentCode], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      const newTab = window.open(blobUrl, '_blank');
+
+      if (newTab) {
+        newTab.onload = () => URL.revokeObjectURL(blobUrl);
+      } else {
+        URL.revokeObjectURL(blobUrl);
+      }  
+
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to re-generate content',
+        status: 'error'
+      });
+      console.log(error);
+    } finally {
+      setIsRegenerating(false);
+      setGenerated(true);
+    }
+  }
 
 
   return (
@@ -174,6 +218,19 @@ function App() {
           >
             Explore
           </Button>
+
+          {isGenerated &&
+            <Button
+              colorScheme="purple"
+              onClick={() => {
+                handleRegenerate()
+              }}
+              isLoading={isRegenerating}
+              loadingText="Re-generating..."
+            >
+              Re-Generate
+            </Button>
+          }
           
         </Box>
       </Box>
