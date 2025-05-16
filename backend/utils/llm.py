@@ -15,6 +15,9 @@ openai_client = AzureOpenAI(
 )
 
 def get_LLM_output(system_prompt: str, user_prompt: str) -> str:
+    """
+    Gets generation output from LLM
+    """
     response = openai_client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
