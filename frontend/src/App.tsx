@@ -11,7 +11,6 @@ interface Member {
   description: string
 }
 
-
 function App() {
   const [members, setMembers] = useState<Member[]>([])
   const [inputs, setInputs] = useState<{ [key: number]: string }>({})
@@ -23,7 +22,7 @@ function App() {
   const [isGenerated, setGenerated] = useState(false)
   const [isRegenerating, setIsRegenerating] = useState(false)
   const toast = useToast()
-  var generatedPage = ""  // to store previously generated webpage code
+  const [generatedPage, setPage] = useState("");  // to store previously generated webpage code
 
   useEffect(() => {
     // Fetch members
@@ -67,8 +66,7 @@ function App() {
         }
       );
 
-      console.log(componentCode);  // For debug purposes
-      generatedPage = componentCode;
+      setPage(componentCode);   // Updates stored page
 
       // Opens generated page in a new tab
       const blob = new Blob([componentCode], { type: 'text/html' });
@@ -95,7 +93,6 @@ function App() {
   };
 
   const handleRegenerate = async() => {
-    console.log(dynamicInput);
     setIsRegenerating(true);
     try {
       // Fetch code from LLM via API calls
@@ -106,8 +103,7 @@ function App() {
         }
       );
 
-      console.log(componentCode);  // For debug purposes
-      generatedPage = componentCode;
+      setPage(componentCode);   // Updates stored page
 
       // Opens re-generated page in a new tab
       const blob = new Blob([componentCode], { type: 'text/html' });
