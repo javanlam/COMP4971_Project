@@ -1,0 +1,6 @@
+fastapi
+pydantic
+llama-index
+contextlib
+python-dotenv
+openai

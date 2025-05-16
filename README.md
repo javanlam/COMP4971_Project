@@ -20,10 +20,10 @@ An example can be found in ```/frontend/src/webpage.txt```.
 - DOMContentLoaded event listener is included
 - Any data displayed will be stored in JSON format
 
-## Starting the Web Server
+## Running the Project
+Set up a virtual environment with anaconda: ```conda activate```
+- Install all dependencies: ```pip install backend/requirements.txt```
+
+### Starting the Web Server
 - In the backend directory, run ```uvicorn main:app --reload --port 8000``` in a terminal
 - In the frontend directory, run ```npm start``` in a terminal
-
-## Further Steps
-- Retrieval-Augmented Generation (RAG) to be applied before LLM queries to avoid hallucination
-- (if possible/time permits) Implement an independent RAG pipeline without using libraries and try to optimize it
